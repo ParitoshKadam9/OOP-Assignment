@@ -20,7 +20,11 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    color: black;
+    background: white;
+    overflow-x: hidden;
   }
+}
+.render{
+  margin-top: 9vh;
 }
