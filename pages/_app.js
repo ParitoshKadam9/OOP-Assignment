@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/navbar/navbar'
 import '../styles/globals.css'
 import { useEffect } from 'react';
+import { Log } from '../Helper/detail';
 
 function MyApp({ Component, pageProps }) {
 
@@ -9,38 +10,42 @@ function MyApp({ Component, pageProps }) {
   const [foot, setFoot] = useState(true)
 
   let params;
- 
+  const [log, setLog] = useState(false)
   useEffect(() => {
     if (process.browser) {
       params = window.location.pathname;
       console.log(params);
 
       if (
-        params == '/Login' || params == '/signUp'
+        params == "/Login" ||
+        params == "/signUp" ||
+        params == "/Admin/admin" ||
+        params == "/Admin/update"
       ) {
         setNav(false);
         setFoot(false);
         console.log(nav);
       }
     }
-  }, [params]);
+  }, params);
   return (
-    <>{
-      nav ? (
+    <Log.Provider value={{ log, setLog }}>
       <>
-        <div className='navbar'>
-          <Navbar/>
+        {nav ? (
+          <>
+            <div className="navbar">
+              <Navbar />
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        <div className="render">
+          <Component {...pageProps} />
         </div>
       </>
-      ) :
-        (<>
-        </>)
-    }
-      <div className='render'>
-        <Component {...pageProps} />
-      </div>
-    </>
-  )
+    </Log.Provider>
+  );
 }
 
 export default MyApp

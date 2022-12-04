@@ -35,6 +35,7 @@ export default function Home() {
   ]
 
   const [det, setDet] = useState(true)
+  
   const [pro, setPro] = useState({
     id: '',
     name: "",

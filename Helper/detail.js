@@ -15,3 +15,7 @@ export const props = createContext({
     disc: "",
     cost: ""
 })
+
+export const Log = createContext({})
+
+export const Updat = createContext({ item_name: "", price: null });
