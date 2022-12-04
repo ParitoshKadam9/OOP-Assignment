@@ -124,6 +124,9 @@ function Admin() {
     <>
       {!det ? (
         <>
+          <div className={styles.add}>
+            <Link href="/Admin/addCat">Add Category</Link>
+          </div>
           <div className={styles.logOut}>LogOut</div>
           <div className={styles.adminContainer}>
             <div className={styles.header1}>Welcome, Admin mc</div>
@@ -163,6 +166,9 @@ function Admin() {
         </>
       ) : (
         <>
+          <div className={styles.add}>
+            <Link href="/Admin/addProd">Add product</Link>
+          </div>
           <div
             className={styles.back}
             onClick={() => {
@@ -192,15 +198,15 @@ function Admin() {
                         {data.item_name}
                       </div>
                       {/* <div className={styles.btn}>Add</div> */}
-                      <div
-                        className={styles.btn}
-                        onClick={() => {
-                        }}
-                      >
-                        <Link href={{
-                          pathname: "/Admin/update",
-                          query :data
-                        }}>Update</Link>
+                      <div className={styles.btn} onClick={() => {}}>
+                        <Link
+                          href={{
+                            pathname: "/Admin/update",
+                            query: data,
+                          }}
+                        >
+                          Update
+                        </Link>
                       </div>
                       <div className={styles.btn}>Delete</div>
                     </div>

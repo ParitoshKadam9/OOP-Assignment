@@ -20,7 +20,9 @@ function MyApp({ Component, pageProps }) {
         params == "/Login" ||
         params == "/signUp" ||
         params == "/Admin/admin" ||
-        params == "/Admin/update"
+        params == "/Admin/update" ||
+        params == "/Admin/addCat" ||
+        params == "/Admin/addProd"
       ) {
         setNav(false);
         setFoot(false);
