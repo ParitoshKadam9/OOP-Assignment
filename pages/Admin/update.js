@@ -1,4 +1,5 @@
 import { Avatar } from '@material-ui/core';
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
@@ -126,8 +127,21 @@ function Update() {
             </div> */}
           {/* </div> */}
         </div>
-          </div>
-          <div className={styles.Save}>Save Changes</div>
+      </div>
+      <div
+        className={styles.Save}
+        onClick={() => {
+          axios.put(
+            `http://localhost:9191/admin/items/delete/${data.id}`,
+            data
+          );
+        }}
+      >
+        <Link href={{
+          pathname: "/Admin/admin",
+          query: true
+        }}>Save Changes</Link>
+      </div>
     </>
   );
 }

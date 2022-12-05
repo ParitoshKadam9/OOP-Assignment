@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Link from 'next/link'
 import React from 'react'
 import { useState } from 'react'
@@ -39,7 +40,15 @@ function AddCat() {
               />
             </div>
           </div>
-          <div className={styles.submit}>Add Category</div>
+          <div className={styles.submit} onClick={() => {
+            axios.post("http://localhost:9191/admin/categories/add", data);
+          }}><Link
+                          href={{
+                            pathname: "/Admin/admin",
+                            query: true,
+                          }}
+          > Add Category
+          </Link></div>
         </div>
       </div>
     </>

@@ -103,7 +103,9 @@ function Navbar() {
                 </div>
               </>
             ) : (
-              <></>
+                <>
+                  <div className={styles.login}>Cart</div>
+                </>
             )}
           </Log.Provider>
         </div>

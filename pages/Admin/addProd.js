@@ -2,9 +2,11 @@ import React from 'react'
 import styles from '../../styles/Admin/AddProd.module.css'
 import { useState } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 
 function AddProd() {
-    const [data, setData] = useState({
+  const [data, setData] = useState({
+      id:'',
       item_name: "",
       price: null,
       offer: null,
@@ -114,7 +116,12 @@ function AddProd() {
               </div>
             </div>
           </div>
-          <div className={styles.submit}>Add Category</div>
+          <div className={styles.submit} onClick={() => {
+            axios.post(`http://localhost:9191/admin/items/${data.category.id}`, data);
+          }}><Link href={{
+              pathname: '/Admin/admin',
+              query: true
+          } } >Add Category</Link></div>
         </div>
       </div>
     </>

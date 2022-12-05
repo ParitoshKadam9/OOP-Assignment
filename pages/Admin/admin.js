@@ -1,13 +1,18 @@
-import React, { use, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import styles from '../../styles/Admin/admin.module.css'
 import { Updat } from '../../Helper/detail'
 import Link from 'next/link'
 import { useContext } from 'react'
+import { useRouter } from 'next/router'
+import axios from 'axios'
 
 
 function Admin() {
 
-  const list = [
+  const router = useRouter();
+  const [reload, setReload] = useState({...router.query})
+
+  const [list, setList] = useState([
     {
       id: 1,
       name: "Mobiles",
@@ -39,7 +44,17 @@ function Admin() {
       categoryId: ''
     },
 
-  ]
+  ])
+  useEffect(() => {
+    axios.get("http://localhost:9191/admin/categories").then(res => {
+      setList(list.concat(res.data))
+      setReload(false)
+    });
+    axios.get("http://localhost:9191/admin/items").then(res => {
+      setRender({...res.data})
+    })
+    console.log('sunning')
+  }, [reload])
   const render = []
   const [render2, setRender] = useState([])
   //   {
@@ -58,62 +73,6 @@ function Admin() {
   //   },
   // ]);
   const [dataa, setdata] = useState([
-    {
-      "id": 1,
-      "item_name": "jbl190",
-      "price": 1.399,
-      "offer": 0,
-      "qty_avlb": 9,
-      "delivery_time": 19,
-      "description": "some chocolate",
-      "img_name": "munch.jpg",
-      "category": {
-        "id": 2,
-        "category_name": "earphones"
-      }
-    },
-    {
-      "id": 2,
-      "item_name": "jbl1590",
-      "price": 1.399,
-      "offer": 0,
-      "qty_avlb": 9,
-      "delivery_time": 19,
-      "description": "some chocolate",
-      "img_name": "munch.jpg",
-      "category": {
-        "id": 2,
-        "category_name": "earphones"
-      }
-    },
-    {
-      "id": 3,
-      "item_name": "jbl152",
-      "price": 1.399,
-      "offer": 0,
-      "qty_avlb": 9,
-      "delivery_time": 19,
-      "description": "some chocolate",
-      "img_name": "munch.jpg",
-      "category": {
-        "id": 1,
-        "category_name": "earphones2"
-      }
-    },
-    {
-      "id": 4,
-      "item_name": "jbl1452",
-      "price": 1.399,
-      "offer": 0,
-      "qty_avlb": 9,
-      "delivery_time": 19,
-      "description": "some chocolate",
-      "img_name": "munch.jpg",
-      "category": {
-        "id": 1,
-        "category_name": "earphones2"
-      }
-    }
   ]
   )
 
@@ -208,7 +167,12 @@ function Admin() {
                           Update
                         </Link>
                       </div>
-                      <div className={styles.btn}>Delete</div>
+                      <div className={styles.btn} onClick={() => {
+                        axios.delete(
+                          `http://localhost:9191/admin/items/delete/${data.id}`
+                        );
+                        setReload(true);
+                      }}>Delete</div>
                     </div>
                   );
                 })}
