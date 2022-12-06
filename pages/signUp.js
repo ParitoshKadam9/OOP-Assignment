@@ -1,22 +1,23 @@
+import axios from 'axios'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/Auth/signup.module.css'
 
 function Signup() {
     const [user, setUser] = useState({
-        userName: '',
+        username: '',
         password: '',
         checkPassword: '',
-        phone: null,
-        email: '',
-        address: {
-            line: '',
-            line2: "",
-            city: '',
-            state: '',
-            country: "",
-            pincode:null
-        },
-        wallet: 1000.00
+        phonenumber: null,
+        emailid: '',
+        addressline1:'',
+        addressline2:'',
+        city: '',
+        statees: '',
+        country: '',
+        pincode : null,
+        roles : null,
+        wallet_amt: 1000.00
 
     })
 
@@ -52,8 +53,8 @@ function Signup() {
               <input
                 className={styles.input}
                 type="text"
-                value={user.userName}
-                name="userName"
+                value={user.username}
+                name="username"
                 onChange={handleChange}
               />
             </div>
@@ -84,8 +85,8 @@ function Signup() {
               <input
                 className={styles.input}
                 type="text"
-                value={user.phone}
-                name="phone"
+                value={user.phonenumber}
+                name="phonenumber"
                 onChange={handleChange}
               />
             </div>
@@ -94,8 +95,8 @@ function Signup() {
               <input
                 className={styles.input}
                 type="email"
-                value={user.email}
-                name="email"
+                value={user.emailid}
+                name="emailid"
                 onChange={handleChange}
               />
             </div>
@@ -104,10 +105,10 @@ function Signup() {
               <input
                 className={styles.input}
                 type="email"
-                value={user.address.line}
+                value={user.addressline1}
                 name="address.line"
                 onChange={(e) => {
-                  user.address.line = e.target.value;
+                  user.addressline1 = e.target.value;
                   setUser({ ...user });
                   console.log(user);
                 }}
@@ -118,10 +119,10 @@ function Signup() {
               <input
                 className={styles.input}
                 type="text"
-                value={user.address.line2}
+                value={user.addressline2}
                 name="address.line2"
                 onChange={(e) => {
-                  user.address.line2 = e.target.value;
+                  user.addressline2 = e.target.value;
                   setUser({ ...user });
                 }}
               />
@@ -133,9 +134,9 @@ function Signup() {
                   <input
                     type="text"
                     className={styles.input3}
-                    value={user.address.city}
+                    value={user.city}
                     onChange={(e) => {
-                      user.address.city = e.target.value;
+                      user.city = e.target.value;
                       setUser({ ...user });
                     }}
                   />
@@ -145,9 +146,9 @@ function Signup() {
                   <input
                     type="text"
                     className={styles.input3}
-                    value={user.address.state}
+                    value={user.statees}
                     onChange={(e) => {
-                      user.address.state = e.target.value;
+                      user.statees = e.target.value;
                       setUser({ ...user });
                     }}
                   />
@@ -159,9 +160,9 @@ function Signup() {
                   <input
                     type="text"
                     className={styles.input3}
-                    value={user.address.country}
+                    value={user.country}
                     onChange={(e) => {
-                      user.address.country = e.target.value;
+                      user.country = e.target.value;
                         setUser({ ...user });
                     }}
                   />
@@ -171,16 +172,23 @@ function Signup() {
                   <input
                     type="text"
                     className={styles.input3}
-                    value={user.address.pincode}
+                    value={user.pincode}
                     onChange={(e) => {
-                      user.address.pincode = e.target.value;
+                      user.pincode = e.target.value;
                       setUser({ ...user });
                     }}
                   />
                 </div>
               </div>
                       </div>
-                      <div className={styles.submit}>Submit</div>
+                      <div className={styles.submit} onClick={()=>{
+                        delete user.statees
+                        delete user.checkPassword
+                        console.log(user)
+                        axios.post("http://localhost:9191/user/add",user);
+
+                      }}>
+                     <a href='/'>Submit</a></div>
           </div>
         </div>
       </div>

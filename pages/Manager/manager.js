@@ -12,12 +12,12 @@ function Admin() {
 
   const [list, setList] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:9191/admin/categories").then((res) => {
+    axios.get("http://localhost:9191/manager/categories").then((res) => {
       setList(res.data);
       setReload(false);
     });
 
-    axios.get("http://localhost:9191/admin/items").then((res) => {
+    axios.get("http://localhost:9191/manager/items").then((res) => {
       setdata(res.data );
       console.log(daa)
     });
@@ -52,17 +52,14 @@ function Admin() {
       {!det ? (
         <>
           <div className={styles.add}>
-            <Link href="/Admin/addCat">Add Category</Link>
+            <Link href="/Manager/addCat">Add Category</Link>
           </div>
           <div className={styles.adddel}>
-            <Link href="/Admin/delCat">Delete Category</Link>
-          </div>
-          <div className={styles.adddelu}>
-            <Link href="/Admin/delUser">Delete User</Link>
+            <Link href="/Manager/delCat">Delete Category</Link>
           </div>
           <div className={styles.logOut}>LogOut</div>
           <div className={styles.adminContainer}>
-            <div className={styles.header1}>Welcome, Admin mc</div>
+            <div className={styles.header1}>Welcome, Manager mc</div>
             <div className={styles.categories}>
 
               {list.map((data) => {
@@ -107,7 +104,7 @@ function Admin() {
         </>
       ) : (
         <>
-          <Link href={{pathname:"/Admin/addProd",
+          <Link href={{pathname:"/Manager/addProd",
           query : cat
           }}>
             <div className={styles.add}>Add product</div>
@@ -155,7 +152,7 @@ function Admin() {
                         className={styles.btn}
                         onClick={() => {
                           axios.delete(
-                            `http://localhost:9191/admin/items/delete/${data.id}`
+                            `http://localhost:9191/manager/items/delete/${data.id}`
                           );
                         }}
                       >
