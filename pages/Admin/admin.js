@@ -5,19 +5,45 @@ import Link from "next/link";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { getCookieParser } from "next/dist/server/api-utils";
 
 function Admin() {
   const router = useRouter();
   const [reload, setReload] = useState({ ...router.query });
 
+  function getCookie(pass) {
+    let cookie = {};
+    document.cookie.split(';').forEach(function (el) {
+      let [key, value] = el.split('=');
+      cookie[key.trim()] = value;
+    })
+    return cookie[pass];
+  }
+
+  const config = {
+    headers: {
+      'token' : getCookie('password')
+    }
+  }
+
+  const [eh, setEh] = useState(true);
+  const [admin, setAdmin] = useState('');
+
   const [list, setList] = useState([]);
-  useEffect(() => {
-    axios.get("http://localhost:9191/admin/categories").then((res) => {
-      setList(res.data);
+  useEffect(async() => {
+    await axios.get("http://localhost:9191/admin/categories", config).then((res) => {
+      if (res == null) {
+        setEh(true);
+      }
+      else {
+        setEh(false)
+        setAdmin(getCookie(userName));
+        setList(res.data);
+      }
       setReload(false);
     });
 
-    axios.get("http://localhost:9191/admin/items").then((res) => {
+    await axios.get("http://localhost:9191/admin/items", config).then((res) => {
       setdata(res.data );
       console.log(daa)
     });
@@ -51,33 +77,41 @@ function Admin() {
     <>
       {!det ? (
         <>
-          <div className={styles.add}>
-            <Link href="/Admin/addCat">Add Category</Link>
-          </div>
-          <div className={styles.adddel}>
-            <Link href="/Admin/delCat">Delete Category</Link>
-          </div>
-          <div className={styles.adddelu}>
-            <Link href="/Admin/delUser">Delete User</Link>
-          </div>
+          {!eh ? (
+            <>
+              <div className={styles.add}>
+                <Link href="/Admin/addCat">Add Category</Link>
+              </div>
+              <div className={styles.adddel}>
+                <Link href="/Admin/delCat">Delete Category</Link>
+              </div>
+              <div className={styles.adddelu}>
+                <Link href="/Admin/delUser">Delete User</Link>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
           <div className={styles.logOut}>LogOut</div>
           <div className={styles.adminContainer}>
-            <div className={styles.header1}>Welcome, Admin mc</div>
+            <div className={styles.header1}>
+              {!eh ? <>Welcome, {Admin}</> : <> Please Login first</>}
+            </div>
             <div className={styles.categories}>
-
               {list.map((data) => {
                 return (
                   <div
                     className={styles.category}
                     key={data.id}
-                    onClick={ () => {
-                      setCat(data.id)
+                    onClick={() => {
+                      setCat(data.id);
                       for (let i = 0; i < daa.length; i++) {
-                        
                         x = data.id;
                         // console.log(dataa[i]);
                         if (daa[i].category.id == x) {
-                          render.push(daa[i]);console.log(daa[i])
+                          render.push(daa[i]);
+                          console.log(daa[i]);
 
                           // setRender({...render})
                           // console.log(render)
@@ -107,9 +141,7 @@ function Admin() {
         </>
       ) : (
         <>
-          <Link href={{pathname:"/Admin/addProd",
-          query : cat
-          }}>
+          <Link href={{ pathname: "/Admin/addProd", query: cat }}>
             <div className={styles.add}>Add product</div>
           </Link>
           <div
@@ -145,7 +177,14 @@ function Admin() {
                         <Link
                           href={{
                             pathname: `/Admin/update`,
-                            query: {item_name : data.item_name, price: data.price, offer: data.offer,qty_avlb:data.qty_avlb,description: data.description, id: data.id},
+                            query: {
+                              item_name: data.item_name,
+                              price: data.price,
+                              offer: data.offer,
+                              qty_avlb: data.qty_avlb,
+                              description: data.description,
+                              id: data.id,
+                            },
                           }}
                         >
                           Update
@@ -159,7 +198,7 @@ function Admin() {
                           );
                         }}
                       >
-                        <a href='/Admin/admin'>Delete</a>
+                        <a href="/Admin/admin">Delete</a>
                       </div>
                     </div>
                   );

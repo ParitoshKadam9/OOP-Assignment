@@ -5,13 +5,31 @@ import { useState } from 'react'
 import styles from '../../styles/Admin/addcat.module.css'
 
 function AddCat() {
-    const [data, setData] = useState('')
+  const [data, setData] = useState('')
+  
+  const [path, setPath] = useState('/Login')
 
     const handleChange = (e) => {
         e.preventDefault();
         setData({ [e.target.name]:e.target.value})
         console.log(data)
-    }
+  }
+  
+    function getCookie(pass) {
+      let cookie = {};
+      document.cookie.split(";").forEach(function (el) {
+        let [key, value] = el.split("=");
+        cookie[key.trim()] = value;
+      });
+      return cookie[pass];
+  }
+  
+    const config = {
+      headers: {
+        token: getCookie("password"),
+      },
+    };
+
   return (
     <>
       <div className={styles.back}>
@@ -40,13 +58,21 @@ function AddCat() {
               />
             </div>
           </div>
-          <div className={styles.submit} onClick={() => {
+          <div className={styles.submit} onClick={async() => {
             console.log(data)
             const lel = "http://localhost:9191/admin/categories/add"
-            axios.post(lel, data).catch(err=>{console.log(err, data)});
+            await axios.post(lel, data, config).then(res => {
+              if (res == null) {
+                alert('Please login first')
+                setPath('/Login')
+              }
+              else {
+                setPath("/Admin/admin");
+              }
+            }).catch(err=>{console.log(err, data)});
           }}><Link
                           href={{
-                            pathname: "/Admin/admin",
+                            pathname: {path},
                             query: true,
                           }}
           > Add Category

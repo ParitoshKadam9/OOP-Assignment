@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import styles from '../../styles/Admin/update.module.css'
-import Admin from './admin';
 
 
 function Update() {

@@ -14,6 +14,23 @@ function AddProd() {
     setData({ ...data, [e.target.name]: e.target.value });
     console.log(data);
   };
+
+      function getCookie(pass) {
+        let cookie = {};
+        document.cookie.split(";").forEach(function (el) {
+          let [key, value] = el.split("=");
+          cookie[key.trim()] = value;
+        });
+        return cookie[pass];
+  }
+  
+  const[path,setPath] = useState('')
+
+      const config = {
+        headers: {
+          token: getCookie("password"),
+        },
+      };
   return (
     <>
       <div className={styles.back}>
@@ -107,16 +124,24 @@ function AddProd() {
           </div>
           <div
             className={styles.submit}
-            onClick={() => {
+            onClick={async() => {
               console.log(catt);
-              axios.post(
+              await axios.post(
                 `http://localhost:9191/admin/items/add/${Object.keys(catt)}`,
-                data
-              );
+                data, config
+              ).then(res => {
+                if (res == null) {
+                  alert("Please Login First")
+                  setPath('/Login')
+                }
+                else {
+                  setPath('/Admin/admin')
+                }
+              });
             }}
           >
             <a
-              href='/Admin/admin'
+              href={path}
             >
               Add Product
             </a>

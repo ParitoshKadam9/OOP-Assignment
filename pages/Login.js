@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { use } from 'react'
 import { useState } from 'react'
 import styles from '../styles/Auth/login.module.css'
 import Link from 'next/link'
+import axios from 'axios'
 
 function Login() {
     const [user, setUser] = useState({
@@ -15,19 +16,51 @@ function Login() {
         setUser({ ...user, [e.target.name]: e.target.value })
         console.log(user)
     }
-    const [on, setOn] = useState(0)
+  const [on, setOn] = useState(0)
+  
+  const [log, setLogged] = useState(false)
+
+  const [url, setUrl] = useState('')
+
+  function setCookie(cName, cValue, expDays) {
+    let date = new Date();
+    data.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+  }
     const handleClick = (id) => {
         if (id == 1) {
             setUser({...user, role:'user'})
         }
         if (id == 2) {
-            setUser({...user, role:'Admin'})
+          setUser({ ...user, role: 'Admin' })
+          axios.post("http://localhost:9191/admin/login", user.password).then(res=>{
+            if (!res) {
+              alert('Invalid Id/Password')
+              setLogged(false)
+            }
+            else{
+              const user = res.data;
+              setLogged(true);
+              setCookie('password', user, 1 )
+            }
+          })
+
+          if (log) {
+            setUrl('/Admin/admin')
+          }
+          else {
+            setUrl('')
+          }
+
         }
         if (id == 3) {
             user.role = "Manager"
             setUser({...user})
         }
 
+      // axios.post("http://localhost:9191/login", user);
+        
         console.log(user)
     }
     let id=0;
@@ -98,7 +131,9 @@ function Login() {
               </div>
             </div>
           </div>
-          <div className={styles.submit}>Submit</div>
+          <div className={styles.submit}>
+            <a href={url}>Submit</a>
+          </div>
           <div className={styles.signup}>
             <Link href="/signUp">Don't have an account? SignUp</Link>
           </div>
