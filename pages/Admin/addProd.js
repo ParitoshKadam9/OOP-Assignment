@@ -1,30 +1,19 @@
-import React from 'react'
-import styles from '../../styles/Admin/AddProd.module.css'
-import { useState } from 'react';
-import Link from 'next/link';
-import axios from 'axios';
+import React from "react";
+import styles from "../../styles/Admin/AddProd.module.css";
+import { useState } from "react";
+import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 function AddProd() {
-  const [data, setData] = useState({
-      id:'',
-      item_name: "",
-      price: null,
-      offer: null,
-      qty_avlb: null,
-      delivery_time: null,
-      description: "",
-      img_name: "",
-      category: {
-        id: null,
-        category_name: ""
-      }
-    
-    })
-    const handleChange = (e) => {
-        e.preventDefault();
-        setData({...data, [e.target.name]:e.target.value})
-        console.log(data)
-    }
+  const router = useRouter();
+  const [catt, setCatt] = useState(router.query);
+  const [data, setData] = useState({});
+  const handleChange = (e) => {
+    e.preventDefault();
+    setData({ ...data, [e.target.name]: e.target.value });
+    console.log(data);
+  };
   return (
     <>
       <div className={styles.back}>
@@ -81,16 +70,16 @@ function AddProd() {
               </div>
               <div className={styles.inputs}>
                 <div className={styles.block}>
-                  <div className={styles.head}>Delivery Time</div>
+                  <div className={styles.head}>Description</div>
                   <input
-                    placeholder={data.delivery_time}
-                    value={data.delivery_time}
-                    name="delivery_time"
+                    placeholder={data.description}
+                    value={data.description}
+                    name="description"
                     onChange={handleChange}
                     className={styles.input}
                   ></input>
                 </div>
-                <div className={styles.block}>
+                {/* <div className={styles.block}>
                   <div className={styles.head}>Item Name</div>
                   <input
                     placeholder={data.description}
@@ -99,9 +88,9 @@ function AddProd() {
                     className={styles.input}
                     onChange={handleChange}
                   ></input>
-                </div>
+                </div> */}
               </div>
-              <div className={styles.block}>
+              {/* <div className={styles.block}>
                 <div className={styles.head}>Category Name</div>
                 <input
                   className={styles.input}
@@ -113,19 +102,29 @@ function AddProd() {
                     console.log(data)
                   }}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
-          <div className={styles.submit} onClick={() => {
-            axios.post(`http://localhost:9191/admin/items/${data.category.id}`, data);
-          }}><Link href={{
-              pathname: '/Admin/admin',
-              query: true
-          } } >Add Category</Link></div>
+          <div
+            className={styles.submit}
+            onClick={() => {
+              console.log(catt);
+              axios.post(
+                `http://localhost:9191/admin/items/add/${Object.keys(catt)}`,
+                data
+              );
+            }}
+          >
+            <a
+              href='/Admin/admin'
+            >
+              Add Product
+            </a>
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-export default AddProd
+export default AddProd;

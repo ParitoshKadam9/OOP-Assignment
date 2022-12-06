@@ -22,7 +22,8 @@ function MyApp({ Component, pageProps }) {
         params == "/Admin/admin" ||
         params == "/Admin/update" ||
         params == "/Admin/addCat" ||
-        params == "/Admin/addProd"
+        params == "/Admin/addProd" ||
+        params == "/Admin/delCat" 
       ) {
         setNav(false);
         setFoot(false);

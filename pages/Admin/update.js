@@ -1,8 +1,7 @@
-import { Avatar } from '@material-ui/core';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import styles from '../../styles/Admin/update.module.css'
 import Admin from './admin';
@@ -15,6 +14,13 @@ function Update() {
     //     item_name: "",
     //     price: null
     // })
+
+    const [cat, setCat] = useState()
+
+    useEffect(()=>{
+      setCat(data.id)
+      console.log(data.id)
+    })
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -80,16 +86,16 @@ function Update() {
           </div>
           <div className={styles.inputs}>
             <div className={styles.block}>
-              <div className={styles.head}>Delivery Time</div>
+              <div className={styles.head}>Description</div>
               <input
-                placeholder={data.delivery_time}
-                value={data.delivery_time}
-                name="delivery_time"
+                placeholder={data.description}
+                value={data.description}
+                name="description"
                 onChange={handleChange}
                 className={styles.input}
               ></input>
             </div>
-            <div className={styles.block}>
+            {/* <div className={styles.block}>
               <div className={styles.head}>Item Name</div>
               <input
                 placeholder={data.description}
@@ -98,7 +104,7 @@ function Update() {
                 className={styles.input}
                 onChange={handleChange}
               ></input>
-            </div>
+            </div> */}
           </div>
           {/* <div className={styles.inputs}>
             <div className={styles.block}>
@@ -131,16 +137,14 @@ function Update() {
       <div
         className={styles.Save}
         onClick={() => {
+          console.log(data)
           axios.put(
-            `http://localhost:9191/admin/items/delete/${data.id}`,
+            `http://localhost:9191/admin/items/update/${cat}`,
             data
           );
         }}
       >
-        <Link href={{
-          pathname: "/Admin/admin",
-          query: true
-        }}>Save Changes</Link>
+        <a href={"/Admin/admin"}>Save Changes</a>
       </div>
     </>
   );

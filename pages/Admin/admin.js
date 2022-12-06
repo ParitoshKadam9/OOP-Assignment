@@ -1,62 +1,32 @@
-import React, { use, useEffect, useState } from 'react'
-import styles from '../../styles/Admin/admin.module.css'
-import { Updat } from '../../Helper/detail'
-import Link from 'next/link'
-import { useContext } from 'react'
-import { useRouter } from 'next/router'
-import axios from 'axios'
-
+import React, { use, useEffect, useState } from "react";
+import styles from "../../styles/Admin/admin.module.css";
+import { Updat } from "../../Helper/detail";
+import Link from "next/link";
+import { useContext } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 function Admin() {
-
   const router = useRouter();
-  const [reload, setReload] = useState({...router.query})
+  const [reload, setReload] = useState({ ...router.query });
 
-  const [list, setList] = useState([
-    {
-      id: 1,
-      name: "Mobiles",
-      categoryId: 1
-    },
-    {
-      id: 2,
-      name: "Laptops",
-      categoryId: 2
-    },
-    {
-      id: 3,
-      name: "Accessories",
-      categoryId: ''
-    },
-    {
-      id: 4,
-      name: "HeadPhones",
-      categoryId: ''
-    },
-    {
-      id: 5,
-      name: "Yashraj",
-      categoryId: ''
-    },
-    {
-      id: 6,
-      name: "Yashraj",
-      categoryId: ''
-    },
-
-  ])
+  const [list, setList] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:9191/admin/categories").then(res => {
-      setList(list.concat(res.data))
-      setReload(false)
+    axios.get("http://localhost:9191/admin/categories").then((res) => {
+      setList(res.data);
+      setReload(false);
     });
-    axios.get("http://localhost:9191/admin/items").then(res => {
-      setRender({...res.data})
-    })
-    console.log('sunning')
-  }, [reload])
-  const render = []
-  const [render2, setRender] = useState([])
+
+    axios.get("http://localhost:9191/admin/items").then((res) => {
+      setdata(res.data );
+      console.log(daa)
+    });
+    console.log("sunning");
+    console.log(list);
+  }, [reload]);
+  const render = [];
+  const [render2, setRender] = useState([]);
+  const [cat, setCat] =useState();
   //   {
   //     id: 3,
   //     item_name: "jbl152",
@@ -72,11 +42,9 @@ function Admin() {
   //     },
   //   },
   // ]);
-  const [dataa, setdata] = useState([
-  ]
-  )
+  const [daa, setdata] = useState([]);
 
-  const [det, setDet] = useState(false)
+  const [det, setDet] = useState(false);
   // const [detailed, setDetailed] = useState(false)
   let x;
   return (
@@ -86,21 +54,28 @@ function Admin() {
           <div className={styles.add}>
             <Link href="/Admin/addCat">Add Category</Link>
           </div>
+          <div className={styles.adddel}>
+            <Link href="/Admin/delCat">Delete Category</Link>
+          </div>
           <div className={styles.logOut}>LogOut</div>
           <div className={styles.adminContainer}>
             <div className={styles.header1}>Welcome, Admin mc</div>
             <div className={styles.categories}>
+
               {list.map((data) => {
                 return (
                   <div
                     className={styles.category}
                     key={data.id}
-                    onClick={async () => {
-                      for (let i = 0; i < dataa.length; i++) {
-                        x = data.categoryId;
+                    onClick={ () => {
+                      setCat(data.id)
+                      for (let i = 0; i < daa.length; i++) {
+                        
+                        x = data.id;
                         // console.log(dataa[i]);
-                        if (dataa[i].category.id == x) {
-                          render.push(dataa[i]);
+                        if (daa[i].category.id == x) {
+                          render.push(daa[i]);console.log(daa[i])
+
                           // setRender({...render})
                           // console.log(render)
                         }
@@ -108,7 +83,10 @@ function Admin() {
                       // for (let i = 0; i < render.length; i++){
                       //   setRender({...render2, render[i]})
                       // }
-                      setRender(render2.concat(render));
+                      Array.isArray(render2)
+                        ? setRender(render2.concat(render))
+                        : {};
+
                       console.log(render2);
                       console.log(render);
                       render;
@@ -116,7 +94,7 @@ function Admin() {
                     }}
                   >
                     <div className={styles.icon}></div>
-                    <div className={styles.name}>{data.name}</div>
+                    <div className={styles.name}>{data.category_name}</div>
                   </div>
                 );
               })}
@@ -125,9 +103,11 @@ function Admin() {
         </>
       ) : (
         <>
-          <div className={styles.add}>
-            <Link href="/Admin/addProd">Add product</Link>
-          </div>
+          <Link href={{pathname:"/Admin/addProd",
+          query : cat
+          }}>
+            <div className={styles.add}>Add product</div>
+          </Link>
           <div
             className={styles.back}
             onClick={() => {
@@ -142,7 +122,7 @@ function Admin() {
             Back
           </div>
           <div className={styles.list}>
-            {render2.length != 0 ? (
+            {Array.isArray(render2) ? (
               <>
                 {render2.map((data) => {
                   return (
@@ -160,19 +140,23 @@ function Admin() {
                       <div className={styles.btn} onClick={() => {}}>
                         <Link
                           href={{
-                            pathname: "/Admin/update",
-                            query: data,
+                            pathname: `/Admin/update`,
+                            query: {item_name : data.item_name, price: data.price, offer: data.offer,qty_avlb:data.qty_avlb,description: data.description, id: data.id},
                           }}
                         >
                           Update
                         </Link>
                       </div>
-                      <div className={styles.btn} onClick={() => {
-                        axios.delete(
-                          `http://localhost:9191/admin/items/delete/${data.id}`
-                        );
-                        setReload(true);
-                      }}>Delete</div>
+                      <div
+                        className={styles.btn}
+                        onClick={() => {
+                          axios.delete(
+                            `http://localhost:9191/admin/items/delete/${data.id}`
+                          );
+                        }}
+                      >
+                        <a href='/Admin/admin'>Delete</a>
+                      </div>
                     </div>
                   );
                 })}
@@ -187,4 +171,4 @@ function Admin() {
   );
 }
 
-export default Admin
+export default Admin;
