@@ -1,68 +1,22 @@
-import React from 'react'
+import axios from 'axios'
+import Cookies from 'js-cookie'
+import React, { useEffect, useState } from 'react'
 import Cart from '../components/Cart/cart'
 import styles from '../styles/Cart/cart.module.css'
 
 function Carts() {
-    const data = [
-      {
-        id: 52,
-        item: {
-          id: 1,
-          item_name: "jb4l778",
-          price: 0.999,
-          offer: 0,
-          qty_avlb: 7,
-          delivery_time: 19,
-          description: "some chocolate",
-          img_name: "munch.jpg",
-          category: {
-            id: 1,
-            category_name: "earphones",
-          },
-        },
-        quantity_in_cart: 2,
-        userid: 1,
-      },
-      {
-        id: 52,
-        item: {
-          id: 1,
-          item_name: "jb4l778",
-          price: 0.999,
-          offer: 0,
-          qty_avlb: 7,
-          delivery_time: 19,
-          description: "some chocolate",
-          img_name: "munch.jpg",
-          category: {
-            id: 1,
-            category_name: "earphones",
-          },
-        },
-        quantity_in_cart: 2,
-        userid: 1,
-      },
-      {
-        id: 52,
-        item: {
-          id: 1,
-          item_name: "jb4l778",
-          price: 0.999,
-          offer: 0,
-          qty_avlb: 7,
-          delivery_time: 19,
-          description: "some chocolate",
-          img_name: "munch.jpg",
-          category: {
-            id: 1,
-            category_name: "earphones",
-          },
-        },
-        quantity_in_cart: 2,
-        userid: 1,
-      },
-    ];
-    const d = [data.item]
+  const config={
+    headers:{
+      token : Cookies.get('password')
+    }
+  }
+  useEffect(()=>{
+    axios.get(`http://localhost:9191/cart/user/${Cookies.get('id')}`, config).then(res=>{
+      console.log(res.data)
+      setData(res.data)
+    })
+  },[])
+    const [data, setData] = useState([]);
   return (
     <>
       <div className={styles.container}>

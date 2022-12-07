@@ -189,6 +189,7 @@ function Signup() {
 
                       }}>
                      <a href='/'>Submit</a></div>
+                     <Link className={styles.login} href="/Login">Already have an account? Login</Link>
           </div>
         </div>
       </div>

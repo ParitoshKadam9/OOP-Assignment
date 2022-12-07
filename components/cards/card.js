@@ -4,10 +4,33 @@ import styles from '../../styles/Cards/card.module.css'
 import { Detailed } from '../../Helper/detail';
 import { useContext } from 'react';
 import { loadprop } from '../../Helper/detail';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 function Card(data) {
     const { det, setDet } = useContext(Detailed)
     const {pro, setPro} = useContext(loadprop)
+
+    const handleAddCart=async(id)=>{
+      const config={
+        headers:{
+          token : Cookies.get('password')
+        }
+      }
+
+     await axios.post(`http://localhost:9191/addToCart/${Cookies.get('id')}/${id}`, config).then(res=>{
+        if(res.data==null) {
+          alert('Please Login')
+          console.log('huhuh')
+        }
+        else{
+          console.log(typeof Cookies.get('password'))
+          console.log(id)
+          console.log(res.data);
+
+        }
+      })
+    }
   return (
     <>
       <div className={styles.container} key={data.id}>
@@ -32,7 +55,7 @@ function Card(data) {
           <div className={styles.cost}>Cost: {data.price}</div>
           <div className={styles.paynow}>
             <div className={styles.buy}>Buy</div>
-            <div className={styles.buy2}>Add to Cart</div>
+            <div className={styles.buy2} onClick={()=>{handleAddCart(data.id)}}>Add to Cart</div>
           </div>
         </div>
       </div>

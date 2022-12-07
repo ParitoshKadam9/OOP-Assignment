@@ -33,6 +33,20 @@ function Login() {
       console.log(id)
         if (id == 1) {
             setUser({...user, role:'user'})
+
+            await axios.post("http://localhost:9191/login", {username: user.name, password: user.password}).then(res=>{
+              if(res==null){
+                alert('Incorrect Username/Password')
+                setLogged(false)
+              }
+              else{
+                setLogged(true)
+                Cookies.set('username', res.data.username)
+                Cookies.set('id', res.data.id)
+                Cookies.set('emailid', res.data.emailid)
+                Cookies.set('password', res.data.password)
+              }
+            })
         }
         if (id == 2) {
           setUser({ ...user, role: 'Admin' })

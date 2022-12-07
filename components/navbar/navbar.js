@@ -73,7 +73,7 @@ function Navbar() {
               </>
             ) : (
                 <>
-                  <div className={styles.login}>Cart</div>
+                  <Link className={styles.login} href="/Carts">Cart</Link>
                 </>
             )}
           </Log.Provider>
