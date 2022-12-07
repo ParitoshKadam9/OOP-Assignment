@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/navbar/navbar'
 import '../styles/globals.css'
 import { useEffect } from 'react';
+import ErrorBoundary from '../components/ErrorBoundary';
 import { Log } from '../Helper/detail';
 
 function MyApp({ Component, pageProps }) {
@@ -33,6 +34,7 @@ function MyApp({ Component, pageProps }) {
     }
   }, params);
   return (
+    <ErrorBoundary>
     <Log.Provider value={{ log, setLog }}>
       <>
         {nav ? (
@@ -49,6 +51,7 @@ function MyApp({ Component, pageProps }) {
         </div>
       </>
     </Log.Provider>
+    </ErrorBoundary>
   );
 }
 

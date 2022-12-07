@@ -19,12 +19,22 @@ function Admin() {
 
   const [list, setList] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:9191/manager/categories").then((res) => {
-      setList(res.data);
+    console.log('jahshsa')
+    axios.get("http://localhost:9191/manager/categories", config).then((res) => {
+      if (res.data == null) {
+        setEh(true);
+        console.log(res)
+      }
+      else {
+        setEh(false)
+        console.log(res.data, 'jhjhj')
+        setAdmin('ADmin');
+        setList(res.data);
+      }
       setReload(false);
     });
 
-    axios.get("http://localhost:9191/manager/items").then((res) => {
+    axios.get("http://localhost:9191/manager/items", config).then((res) => {
       setdata(res.data );
       console.log(daa)
     });
@@ -49,6 +59,8 @@ function Admin() {
   //     },
   //   },
   // ]);
+  const [eh, setEh] = useState(true);
+  const [admin, setAdmin] = useState('');
   const [daa, setdata] = useState([]);
 
   const [det, setDet] = useState(false);
@@ -58,18 +70,31 @@ function Admin() {
     <>
       {!det ? (
         <>
-          <div className={styles.add}>
-            <Link href="/Manager/addCat">Add Category</Link>
-          </div>
-          <div className={styles.adddel}>
-            <Link href="/Manager/delCat">Delete Category</Link>
-          </div>
-          <div className={styles.logOut}>LogOut</div>
+        {!eh ? (
+            <>
+              <div className={styles.add}>
+                <Link href="/Manager/addCat">Add Category</Link>
+              </div>
+              <div className={styles.adddel}>
+                <Link href="/Manager/delCat">Delete Category</Link>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+          <a href="/Manager/manager" className={styles.logOut} onClick={
+            ()=>{
+              Cookies.remove('pass')
+              
+            }
+          }>LogOut</a>
           <div className={styles.adminContainer}>
-            <div className={styles.header1}>Welcome, Manager</div>
+          <div className={styles.header1}>
+          {!eh ? <>Welcome, Manager</> : <> Please Login first</>}
+          </div>
             <div className={styles.categories}>
 
-              {list.map((data) => {
+              {Array.isArray(list)? (<>{list.map((data) => {
                 return (
                   <div
                     className={styles.category}
@@ -105,7 +130,9 @@ function Admin() {
                     <div className={styles.name2}>Id:{data.id}</div>
                   </div>
                 );
-              })}
+              }
+              )
+              }</>):(<></>)}
             </div>
           </div>
         </>
@@ -159,7 +186,7 @@ function Admin() {
                         className={styles.btn}
                         onClick={() => {
                           axios.delete(
-                            `http://localhost:9191/manager/items/delete/${data.id}`
+                            `http://localhost:9191/manager/items/delete/${data.id}`, config
                           );
                         }}
                       >

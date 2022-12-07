@@ -10,9 +10,9 @@
     margin: 2vh 6vh 2vh 6vh ;
 }
 .img{
-    height: 30vh;
+    height: 21vh;
     width: 30vh;
-    background: rgb(188, 188, 188);
+    /* background: rgb(188, 188, 188); */
     border-radius: 10px;
     margin: 1vh 1vh 2vh 1vh ;
 }
@@ -24,7 +24,8 @@
 }
 .edit{
     margin: 0 2vh 0 2vh ;
-    width: 4vh;
+    width: auto;
+    padding: 0 2vh 0 2vh;
     height: 4vh;
     background: #000;
     color: white;

@@ -7,11 +7,12 @@ import { props } from "../../Helper/detail";
 import Link from 'next/link'
 import { Log } from '../../Helper/detail'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 function Navbar() {
 
   useEffect(()=>{
-    axios.get("http://localhost:9191/admin/categories").then((res) => {
+    axios.get("http://localhost:9191/getCategories").then((res) => {
       setListt(res.data);
       
     });
@@ -63,7 +64,7 @@ function Navbar() {
             })}
           </div>
           <Log.Provider value={{ log, setLog }}>
-            {!logged ? (
+            {Cookies.get('id')==undefined ? (
               <>
                 <div className={styles.login} onClick={() => {
                   setLog(!log)
@@ -74,6 +75,12 @@ function Navbar() {
             ) : (
                 <>
                   <Link className={styles.login} href="/Carts">Cart</Link>
+                  <a className={styles.login2} href="/" onClick={()=>{
+                    Cookies.remove('password')
+                    Cookies.remove('emailid')
+                    Cookies.remove('username')
+                    Cookies.remove('id')
+                  }}>Logout</a>
                 </>
             )}
           </Log.Provider>

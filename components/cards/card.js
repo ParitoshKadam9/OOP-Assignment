@@ -13,21 +13,31 @@ function Card(data) {
 
     const handleAddCart=async(id)=>{
       const config={
-          egg : Cookies.get('password')
+          token : Cookies.get('password')
         
       }
 
+      if(Cookies.get('id')==undefined){
+        alert('Login First')
+      }
+
      await axios.get(`http://localhost:9191/addToCart/${Cookies.get('id')}/${id}`, {headers: config}).then(res=>{
-        if(res.data==null) {
+
+        if(Cookies.get('id')==undefined){
+          alert('Login First')
+        }
+        else if(res.data==null) {
           alert('Please Login')
           console.log('huhuh')
         }
         else{
-          console.log(typeof Cookies.get('password'))
+          console.log(Cookies.get('password'))
           console.log(id)
           console.log(res.data);
 
         }
+      }).catch(err=>{
+        console.log(err)
       })
     }
   return (
@@ -53,7 +63,6 @@ function Card(data) {
           <div className={styles.disc}>{data.item_name}</div>
           <div className={styles.cost}>Cost: {data.price}</div>
           <div className={styles.paynow}>
-            <div className={styles.buy}>Buy</div>
             <div className={styles.buy2} onClick={()=>{handleAddCart(data.id)}}>Add to Cart</div>
           </div>
         </div>

@@ -25,7 +25,7 @@ function delCat() {
       </div>
       <div className={styles.main}>
         <div className={styles.container}>
-          <div className={styles.head}>Delete Categories</div>
+          <div className={styles.head}>Delete User</div>
           <div className={styles.inputs}>
             {/* <div className={styles.inputbox}>
               <div className={styles.name}>Category ID</div>
@@ -37,7 +37,7 @@ function delCat() {
               />
             </div> */}
             <div className={styles.inputbox}>
-              <div className={styles.name}>Category Id</div>
+              <div className={styles.name}>User Id</div>
               <input
                 className={styles.input}
                 value={data.id}

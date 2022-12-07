@@ -64,8 +64,7 @@
 .buy2{
     width: auto;
     padding: 1vh 2vh 1vh 2vh;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 5px;
     height: 5vh;
     background: black;
     border-left: 1px solid white;

@@ -41,10 +41,12 @@ function Login() {
               }
               else{
                 setLogged(true)
+                console.log(res.data)
                 Cookies.set('username', res.data.username)
                 Cookies.set('id', res.data.id)
                 Cookies.set('emailid', res.data.emailid)
                 Cookies.set('password', res.data.password)
+                Cookies.set('wallet', res.data.wallet_amt)
               }
             })
         }
@@ -80,6 +82,14 @@ function Login() {
         if (id == 3) {
             user.role = "Manager"
             setUser({...user})
+            console.log('shjahjshjahsjahsjhjas')
+
+            await axios.post("http://localhost:9191/manager/login" , {password: user.password}).then(res=>{
+              
+                console.log('nais')
+                Cookies.set('pass', res.data)
+              
+            })
         }
 
       // axios.post("http://localhost:9191/login", user);
