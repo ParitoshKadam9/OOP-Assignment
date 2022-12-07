@@ -1,8 +1,9 @@
-import React, { use } from 'react'
+import React, { use, useEffect } from 'react'
 import { useState } from 'react'
 import styles from '../styles/Auth/login.module.css'
 import Link from 'next/link'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 function Login() {
     const [user, setUser] = useState({
@@ -22,36 +23,44 @@ function Login() {
 
   const [url, setUrl] = useState('')
 
-  function setCookie(cName, cValue, expDays) {
-    let date = new Date();
-    data.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + date.toUTCString();
-    document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
-  }
-    const handleClick = (id) => {
+  // function setCookie(cName, cValue, expDays) {
+  //   let date = new Date();
+  //   date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+  //   const expires = "expires=" + date.toUTCString();
+  //   document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+  // }
+    const handleClick = async (id) => {
+      console.log(id)
         if (id == 1) {
             setUser({...user, role:'user'})
         }
         if (id == 2) {
           setUser({ ...user, role: 'Admin' })
-          axios.post("http://localhost:9191/admin/login", user.password).then(res=>{
-            if (!res) {
-              alert('Invalid Id/Password')
-              setLogged(false)
-            }
-            else{
-              const user = res.data;
-              setLogged(true);
-              setCookie('password', user, 1 )
-            }
-          })
+         
 
-          if (log) {
-            setUrl('/Admin/admin')
-          }
-          else {
-            setUrl('')
-          }
+           await axios.post("http://localhost:9191/admin/login", {password : user.password}).then(res=>{
+              console.log(res.data)
+              if (!res) {
+                alert('Invalid Id/Password')
+                setLogged(false)
+              }
+              else{
+                const pass = res.data;
+                setLogged(true);
+                Cookies.set('pass', res.data)
+              }
+              if (log) {
+                console.log('ahahs')
+                return redirect("/Admin/admin")
+                setUrl('/Admin/admin')
+              }
+              else {
+                setUrl('')
+              }
+            })
+  
+        
+
 
         }
         if (id == 3) {
@@ -131,8 +140,8 @@ function Login() {
               </div>
             </div>
           </div>
-          <div className={styles.submit}>
-            <a href={url}>Submit</a>
+          <div className={styles.submit} onClick={()=>{handleClick(on)}}>
+            Submit
           </div>
           <div className={styles.signup}>
             <Link href="/signUp">Don't have an account? SignUp</Link>

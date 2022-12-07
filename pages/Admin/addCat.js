@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import Link from 'next/link'
 import React from 'react'
 import { useState } from 'react'
@@ -15,18 +16,18 @@ function AddCat() {
         console.log(data)
   }
   
-    function getCookie(pass) {
-      let cookie = {};
-      document.cookie.split(";").forEach(function (el) {
-        let [key, value] = el.split("=");
-        cookie[key.trim()] = value;
-      });
-      return cookie[pass];
-  }
+  //   function getCookie(pass) {
+  //     let cookie = {};
+  //     document.cookie.split(";").forEach(function (el) {
+  //       let [key, value] = el.split("=");
+  //       cookie[key.trim()] = value;
+  //     });
+  //     return cookie[pass];
+  // }
   
     const config = {
       headers: {
-        token: getCookie("password"),
+        token: Cookies.get("pass"),
       },
     };
 
@@ -64,7 +65,7 @@ function AddCat() {
             await axios.post(lel, data, config).then(res => {
               if (res == null) {
                 alert('Please login first')
-                setPath('/Login')
+                // setPath('/Login')
               }
               else {
                 setPath("/Admin/admin");
@@ -72,7 +73,7 @@ function AddCat() {
             }).catch(err=>{console.log(err, data)});
           }}><Link
                           href={{
-                            pathname: {path},
+                            pathname: '/Admin/admin',
                             query: true,
                           }}
           > Add Category

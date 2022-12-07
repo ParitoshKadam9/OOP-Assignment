@@ -6,23 +6,24 @@ import { useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { getCookieParser } from "next/dist/server/api-utils";
+import Cookies from "js-cookie";
 
 function Admin() {
   const router = useRouter();
   const [reload, setReload] = useState({ ...router.query });
 
-  function getCookie(pass) {
-    let cookie = {};
-    document.cookie.split(';').forEach(function (el) {
-      let [key, value] = el.split('=');
-      cookie[key.trim()] = value;
-    })
-    return cookie[pass];
-  }
+  // function getCookie(pass) {
+  //   let cookie = {};
+  //   document.cookie.split(';').forEach(function (el) {
+  //     let [key, value] = el.split('=');
+  //     cookie[key.trim()] = value;
+  //   })
+  //   return cookie[pass];
+  // }
 
   const config = {
     headers: {
-      'token' : getCookie('password')
+      token : Cookies.get('pass')
     }
   }
 
@@ -30,20 +31,21 @@ function Admin() {
   const [admin, setAdmin] = useState('');
 
   const [list, setList] = useState([]);
-  useEffect(async() => {
-    await axios.get("http://localhost:9191/admin/categories", config).then((res) => {
-      if (res == null) {
+  useEffect(() => {
+    console.log('ss')
+     axios.get("http://localhost:9191/admin/categories", config).then((res) => {
+      if (res.data == null) {
         setEh(true);
       }
       else {
         setEh(false)
-        setAdmin(getCookie(userName));
+        setAdmin('ADmin');
         setList(res.data);
       }
       setReload(false);
     });
 
-    await axios.get("http://localhost:9191/admin/items", config).then((res) => {
+     axios.get("http://localhost:9191/admin/items", config).then((res) => {
       setdata(res.data );
       console.log(daa)
     });
@@ -194,11 +196,11 @@ function Admin() {
                         className={styles.btn}
                         onClick={() => {
                           axios.delete(
-                            `http://localhost:9191/admin/items/delete/${data.id}`
-                          );
+                            `http://localhost:9191/admin/items/delete/${data.id}`, config
+                          ).then(res => console.log('Deleted: ', res));
                         }}
                       >
-                        <a href="/Admin/admin">Delete</a>
+                        del
                       </div>
                     </div>
                   );
