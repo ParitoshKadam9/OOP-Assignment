@@ -95,7 +95,12 @@ function Admin() {
             <></>
           )}
 
-          <div className={styles.logOut}>LogOut</div>
+          <a href="/Admin/admin" className={styles.logOut} onClick={
+            ()=>{
+              Cookies.remove('pass')
+              
+            }
+          }>LogOut</a>
           <div className={styles.adminContainer}>
             <div className={styles.header1}>
               {!eh ? <>Welcome, {Admin}</> : <> Please Login first</>}
