@@ -5,10 +5,17 @@ import Link from "next/link";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 function Admin() {
   const router = useRouter();
   const [reload, setReload] = useState({ ...router.query });
+
+  const config = {
+    headers: {
+      token : Cookies.get('pass')
+    }
+  }
 
   const [list, setList] = useState([]);
   useEffect(() => {
@@ -59,7 +66,7 @@ function Admin() {
           </div>
           <div className={styles.logOut}>LogOut</div>
           <div className={styles.adminContainer}>
-            <div className={styles.header1}>Welcome, Manager mc</div>
+            <div className={styles.header1}>Welcome, Manager</div>
             <div className={styles.categories}>
 
               {list.map((data) => {

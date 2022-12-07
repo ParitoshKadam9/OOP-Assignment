@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 function AddProd() {
   const router = useRouter();
@@ -15,20 +16,20 @@ function AddProd() {
     console.log(data);
   };
 
-      function getCookie(pass) {
-        let cookie = {};
-        document.cookie.split(";").forEach(function (el) {
-          let [key, value] = el.split("=");
-          cookie[key.trim()] = value;
-        });
-        return cookie[pass];
-  }
+      // function getCookie(pass) {
+      //   let cookie = {};
+      //   document.cookie.split(";").forEach(function (el) {
+      //     let [key, value] = el.split("=");
+      //     cookie[key.trim()] = value;
+      //   });
+      //   return cookie[pass];
+
   
   const[path,setPath] = useState('')
 
       const config = {
         headers: {
-          token: getCookie("password"),
+          token: Cookies.get("pass"),
         },
       };
   return (

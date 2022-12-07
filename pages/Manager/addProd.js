@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 function AddProd() {
   const router = useRouter();
@@ -14,6 +15,14 @@ function AddProd() {
     setData({ ...data, [e.target.name]: e.target.value });
     console.log(data);
   };
+  const[path,setPath] = useState('')
+
+  const config = {
+    headers: {
+      token: Cookies.get("pass"),
+    },
+  };
+
   return (
     <>
       <div className={styles.back}>
@@ -107,16 +116,24 @@ function AddProd() {
           </div>
           <div
             className={styles.submit}
-            onClick={() => {
+            onClick={async() => {
               console.log(catt);
-              axios.post(
+              await axios.post(
                 `http://localhost:9191/manager/items/add/${Object.keys(catt)}`,
-                data
-              );
+                data, config
+              ).then(res => {
+                if (res == null) {
+                  alert("Please Login First")
+                  setPath('/Login')
+                }
+                else {
+                  setPath('/Manager/manager')
+                }
+              });
             }}
           >
             <a
-              href='/Manager/manager'
+              href={path}
             >
               Add Product
             </a>

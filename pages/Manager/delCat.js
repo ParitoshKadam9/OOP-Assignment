@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { useState } from 'react'
 import styles from '../../styles/Admin/delcat.module.css'
+import Cookies from 'js-cookie'
 
 function delCat() {
     const [data, setData] = useState('')
@@ -12,6 +13,13 @@ function delCat() {
         setData({ [e.target.name]:e.target.value})
         console.log(data)
     }
+
+    const config = {
+      headers: {
+        token : Cookies.get('pass')
+      }
+    }
+
   return (
     <>
       <div className={styles.back}>
@@ -43,7 +51,7 @@ function delCat() {
           <div className={styles.submit} onClick={() => {
             console.log(data)
             const lel = `http://localhost:9191/manager/categories/delete/${Object.values(data)}`
-            axios.delete(lel).catch(err=>{console.log(err, data)});
+            axios.delete(lel,config).catch(err=>{console.log(err, data)});
           }}><Link
                           href={{
                             pathname: "/Manager/manager",

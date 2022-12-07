@@ -1,17 +1,26 @@
-import axios from 'axios'
-import Link from 'next/link'
-import React from 'react'
-import { useState } from 'react'
-import styles from '../../styles/Admin/addcat.module.css'
+import axios from "axios";
+import Cookies from 'js-cookie'
+import Link from "next/link";
+import React from "react";
+import { useState } from "react";
+import styles from "../../styles/Admin/addcat.module.css";
 
 function AddCat() {
-    const [data, setData] = useState('')
+  const [data, setData] = useState("");
+    const [path, setPath] = useState('/Login')
 
     const handleChange = (e) => {
         e.preventDefault();
         setData({ [e.target.name]:e.target.value})
         console.log(data)
     }
+
+    const config = {
+      headers: {
+        token: Cookies.get("pass"),
+      },
+    };
+
   return (
     <>
       <div className={styles.back}>
@@ -40,21 +49,39 @@ function AddCat() {
               />
             </div>
           </div>
-          <div className={styles.submit} onClick={() => {
-            console.log(data)
-            const lel = "http://localhost:9191/manager/categories/add"
-            axios.post(lel, data).catch(err=>{console.log(err, data)});
-          }}><Link
-                          href={{
-                            pathname: "/Manager/manager",
-                            query: true,
-                          }}
-          > Add Category
-          </Link></div>
+          <div
+            className={styles.submit}
+            onClick={async() => {
+              console.log(data);
+              const lel = "http://localhost:9191/manager/categories/add";
+            await   axios.post(lel, data, config).then(res => {
+              if (res == null) {
+                alert('Please login first')
+                // setPath('/Login')
+              }
+              else {
+                setPath("/Manager/manager");
+              }
+            }).catch((err) => {
+                console.log(err, data);
+              });
+            }}
+          >
+          
+            <Link
+              href={{
+                pathname: '/Manager/manager',
+                query: true,
+              }}
+            >
+              {" "}
+              Add Category
+            </Link>
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-export default AddCat
+export default AddCat;
