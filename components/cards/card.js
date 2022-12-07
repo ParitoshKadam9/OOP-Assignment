@@ -13,12 +13,11 @@ function Card(data) {
 
     const handleAddCart=async(id)=>{
       const config={
-        headers:{
-          token : Cookies.get('password')
-        }
+          egg : Cookies.get('password')
+        
       }
 
-     await axios.post(`http://localhost:9191/addToCart/${Cookies.get('id')}/${id}`, config).then(res=>{
+     await axios.get(`http://localhost:9191/addToCart/${Cookies.get('id')}/${id}`, {headers: config}).then(res=>{
         if(res.data==null) {
           alert('Please Login')
           console.log('huhuh')
