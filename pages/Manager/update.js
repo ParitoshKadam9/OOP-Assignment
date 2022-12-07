@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import styles from '../../styles/Admin/update.module.css'
+import Cookies from 'js-cookie';
 
 
 function Update() {
@@ -27,6 +28,12 @@ function Update() {
         console.log(data)
         
     }
+
+    const config = {
+      headers : {
+        token : Cookies.get("pass"),
+      },
+    };
 
   return (
     <>
@@ -139,7 +146,8 @@ function Update() {
           console.log(data)
           axios.put(
             `http://localhost:9191/manager/items/update/${cat}`,
-            data
+            data,
+            config
           );
         }}
       >
