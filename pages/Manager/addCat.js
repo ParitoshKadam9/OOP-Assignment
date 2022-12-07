@@ -1,17 +1,17 @@
-import axios from 'axios'
-import Link from 'next/link'
-import React from 'react'
-import { useState } from 'react'
-import styles from '../../styles/Admin/addcat.module.css'
+import axios from "axios";
+import Link from "next/link";
+import React from "react";
+import { useState } from "react";
+import styles from "../../styles/Admin/addcat.module.css";
 
 function AddCat() {
-    const [data, setData] = useState('')
+  const [data, setData] = useState("");
 
-    const handleChange = (e) => {
-        e.preventDefault();
-        setData({ [e.target.name]:e.target.value})
-        console.log(data)
-    }
+  const handleChange = (e) => {
+    e.preventDefault();
+    setData({ [e.target.name]: e.target.value });
+    console.log(data);
+  };
   return (
     <>
       <div className={styles.back}>
@@ -40,21 +40,30 @@ function AddCat() {
               />
             </div>
           </div>
-          <div className={styles.submit} onClick={() => {
-            console.log(data)
-            const lel = "http://localhost:9191/manager/categories/add"
-            axios.post(lel, data).catch(err=>{console.log(err, data)});
-          }}><Link
-                          href={{
-                            pathname: "/Manager/manager",
-                            query: true,
-                          }}
-          > Add Category
-          </Link></div>
+          <div
+            className={styles.submit}
+            onClick={() => {
+              console.log(data);
+              const lel = "http://localhost:9191/manager/categories/add";
+              axios.post(lel, data).catch((err) => {
+                console.log(err, data);
+              });
+            }}
+          >
+            <Link
+              href={{
+                pathname: "/Manager/manager",
+                query: true,
+              }}
+            >
+              {" "}
+              Add Category
+            </Link>
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-export default AddCat
+export default AddCat;

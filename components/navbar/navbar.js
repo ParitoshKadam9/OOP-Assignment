@@ -17,7 +17,7 @@ function Navbar() {
     });
   })
   const [on, setOn] = useState(0)
-  const [logged, setLogged] = useState(false)
+  const [logged, setLogged] = useState(true)
     const [list,setListt] = useState([]);
 
         const [listt, setList] = useState({
